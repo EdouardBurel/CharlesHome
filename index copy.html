@@ -62,6 +62,15 @@
                     <p class="card-text mb-1">- End date: dd/mm/yy</p>
                     <p class="card-text mb-1" onclick="showExtensionForm();">- <a href="#">Extension Request</a></p>
                 </div>
+                <form id="extensionForm" class="formHidden">
+                    <label for="startDate">Start date extension:</label>
+                    <input type="date" id="startDate" name="startDate" required>
+            
+                    <label for="endDate">End date extension:</label>
+                    <input type="date" id="endDate" name="endDate" required>
+            
+                    <input type="submit" value="Send">
+                </form>
             </div>
 
 
@@ -95,20 +104,6 @@
                 <h5 class="card-title">Danger card title</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
-            </div>
-        </div>
-        <div id="overlay" class="overlay">
-            <div class="modal">
-                <form>
-                    <label class="labelDate" for="startDate">Start date extension:</label>
-                    <input type="date" id="startDate" name="startDate" required>
-    
-                    <label class="labelDate" for="endDate">End date extension:</label>
-                    <input type="date" id="endDate" name="endDate" required>
-    
-                    <input type="submit" value="Send">
-                    <button type="button" onclick="closeExtensionForm();">X</button>
-                </form>
             </div>
         </div>
     </main>

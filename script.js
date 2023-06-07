@@ -6,15 +6,6 @@ function closeExtensionForm() {
     document.getElementById("overlay").style.display = "none";
 }
 
-
-/*
-function showExtensionForm() {
-    var overlay = document.getElementById("overlay");
-    overlay.style.display = "flex";
-}
-
-function closeExtensionForm() {
-    var overlay = document.getElementById("overlay");
-    overlay.style.display = "none";
-}
-*/
+function openPDF() {
+    window.open('docs/calendar_Montagne.pdf', '_blank', 'height=600,width=800');
+  }

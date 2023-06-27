@@ -67,9 +67,45 @@
     <section class="dashboard">
         <div class="top">
             <i class="fa-solid fa-bars sidebar-toggle"></i>
+
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="...">
+            </div>
+        </div>
+
+        <div class="dash-content">
+            <div class="overview">
+                <div class="title">
+                    <i class="fa fa-home"></i>
+                    <span class="text">Rentals</span>
+                </div>
+
+                <div class="boxes">
+                    <div class="box box1">
+                        <span class="text">Occupancy</span>
+                        <span class="number">100%</span>
+                    </div>
+
+                    <div class="box box2">
+                        <span class="text">Monthly income</span>
+                        <span class="number">100€</span>
+                    </div>
+
+                    <div class="box box3">
+                        <span class="text">Next month occupancy</span>
+                        <span class="number">100%</span>
+                    </div>
+                </div>
+
+                <div class="activity">
+                    <div class="title">
+                        <i class="fa fa-list"></i>
+                        <span class="text">Current rentals</span>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 

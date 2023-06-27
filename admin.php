@@ -42,7 +42,7 @@
                 </li>
             </ul>
 
-            <ul class="logout-mod">
+            <ul class="logout-mode">
                 <li>
                     <a href="#">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -50,17 +50,32 @@
                     </a>
                 </li>
 
-                <li>
+                <li class="mode">
                     <a href="#">
                         <i class="fa-solid fa-moon"></i>
                         <span class="link-name">Dark Mode</span>
                     </a>
+
+                    <div class="mode-toggle">
+                        <span class="switch"></span>
+                    </div>
                 </li>
 
             </ul>
         </div>
     </nav>
+    <section class="dashboard">
+        <div class="top">
+            <i class="fa-solid fa-bars sidebar-toggle"></i>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="...">
+            </div>
+        </div>
 
+    </section>
+
+    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>

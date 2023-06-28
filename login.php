@@ -19,7 +19,7 @@ if(isset($_POST['submit'])){
        if($res['role'] == 'admin'){
    
           $_SESSION['admin_id'] = $res['id'];
-          header('location:/admin/admin.php');
+          header('location:/admin.php');
  
        }elseif($res['role'] == 'user'){
  

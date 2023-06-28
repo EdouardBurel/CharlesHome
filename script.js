@@ -20,3 +20,8 @@ sidebarToggle.addEventListener("click", () => {
     sidebar.classList.toggle("close");
 
 });
+
+
+var text = $apartmentName;
+var $imageName = text.toLowerCase().replace(/\s/g, '');
+console.log(variable);

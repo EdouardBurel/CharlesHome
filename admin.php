@@ -1,3 +1,15 @@
+<?php
+    ini_set('display_errors', 'off');
+    session_start();
+    $pdo = new PDO('mysql:dbname=edouardburel_charleshome;host=mysql-edouardburel.alwaysdata.net', '302132_chome', 'Charleshome1');
+    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if(!isset($_SESSION['admin_id'])) {
+        header('location: login.php');
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +40,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="tenants.php">
                         <i class="fa fa-user"></i>
                         <span class="link-name">Tenants</span>
                     </a>
@@ -44,7 +56,7 @@
 
             <ul class="logout-mode">
                 <li>
-                    <a href="#">
+                    <a href="logout.php">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         <span class="link-name">Logout</span>
                     </a>
@@ -65,15 +77,6 @@
         </div>
     </nav>
     <section class="dashboard">
-        <div class="top">
-            <i class="fa-solid fa-bars sidebar-toggle"></i>
-
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="...">
-            </div>
-        </div>
-
         <div class="dash-content">
             <div class="overview">
                 <div class="title">
@@ -93,19 +96,56 @@
                     </div>
 
                     <div class="box box3">
-                        <span class="text">Next month occupancy</span>
-                        <span class="number">100%</span>
+                        <span class="text">Cleaning Service</span>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                <th scope="col">Vert</th>
+                                <th scope="col">Noir</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td scope="row">10</td>
+                                    <td>3</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <div class="activity">
                     <div class="title">
                         <i class="fa fa-list"></i>
-                        <span class="text">Current rentals</span>
+                        <span class="text">Current tenants</span>
                     </div>
-
                 </div>
-
+                <?php
+                $stmt = $pdo->query("SELECT * FROM CurrentTenant");
+                $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                ?>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th scope="col">Apartment</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">End Lease</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tenants as $tenant): ?>
+                            <tr>
+                                <td><?= $tenant['Apartment']; ?></td>
+                                <td><?= $tenant['TenantName']; ?></td>
+                                <td><?= $tenant['EndLease']; ?></td>
+                                <td><?= $tenant['Email']; ?></td>
+                                <td><?= $tenant['Number']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
 

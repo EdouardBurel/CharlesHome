@@ -38,7 +38,7 @@
 
                 $user = $res->fetch(PDO::FETCH_ASSOC);
 
-                $reservationName = (string)$user['firstName'].' '.(string)$user['lastName'];
+                $reservationName = (string)$user['first_name'];
 
                 echo <<<HTML
               <img src="image/logo_charles-home.png" alt="CHARLES HOME">
@@ -48,7 +48,7 @@
               <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="#">Hom7e</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">Your stay</a>
@@ -61,7 +61,7 @@
                     </li>
                 </ul>
                 <span class="helloText navbar-text">
-                    Hello $reservationName !
+                    Hello $reservationName
                 </span>
               </div>
             </div>
@@ -70,30 +70,10 @@
         </nav>
     </header>
     <main>
-    <?php
-    // Query to fetch the ApartmentID for the name "John Doe"
-    $query = "SELECT ApartmentID FROM Tenant WHERE Name = '$reservationName'";
-    $statement = $pdo->query($query);
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
-
-    if ($result) {
-        $apartmentId = $result['ApartmentID'];
-        // Use the $apartmentId to fetch the corresponding apartment name
-        $query = "SELECT Name FROM Apartment WHERE ApartmentID = :apartment_id";
-        $statement = $pdo->prepare($query);
-        $statement->bindValue(':apartment_id', $apartmentId);
-        $statement->execute();
-        $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
-
-        if ($apartmentResult) {
-            $apartmentName = $apartmentResult['Name'];
-        }
-    }
-    ?>
         <div class="container">
-            <img class="imgApart" src="image/<?php echo strtolower(str_replace(' ', '', $apartmentName)); ?>.jpg" alt="Apartment">
+            <img class="imgApart" src="image/original.jpg" alt="Apartment">
             <div class="centered">
-            <h3><?php echo $apartmentName; ?></h3>
+                <h3>Apartment name</h3>
             </div>
         </div>
 

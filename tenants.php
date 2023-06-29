@@ -50,7 +50,7 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="invoiceAdmin.php">
                         <i class="fa-solid fa-file-invoice"></i>
                         <span class="link-name">Invoice</span>
                     </a>

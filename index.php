@@ -70,26 +70,26 @@
         </nav>
     </header>
     <main>
-    <?php
-    // Query to fetch the ApartmentID for the name "John Doe"
-    $query = "SELECT ApartmentID FROM Tenant WHERE Name = '$reservationName'";
-    $statement = $pdo->query($query);
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
+        <?php
+        // Query to fetch the ApartmentID for the name "John Doe"
+        $query = "SELECT ApartmentID FROM Tenant WHERE Name = '$reservationName'";
+        $statement = $pdo->query($query);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-    if ($result) {
-        $apartmentId = $result['ApartmentID'];
-        // Use the $apartmentId to fetch the corresponding apartment name
-        $query = "SELECT Name FROM Apartment WHERE ApartmentID = :apartment_id";
-        $statement = $pdo->prepare($query);
-        $statement->bindValue(':apartment_id', $apartmentId);
-        $statement->execute();
-        $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            $apartmentId = $result['ApartmentID'];
+            // Use the $apartmentId to fetch the corresponding apartment name
+            $query = "SELECT Name FROM Apartment WHERE ApartmentID = :apartment_id";
+            $statement = $pdo->prepare($query);
+            $statement->bindValue(':apartment_id', $apartmentId);
+            $statement->execute();
+            $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ($apartmentResult) {
-            $apartmentName = $apartmentResult['Name'];
+            if ($apartmentResult) {
+                $apartmentName = $apartmentResult['Name'];
+            }
         }
-    }
-    ?>
+        ?>
         <div class="container">
             <img class="imgApart" src="image/<?php echo strtolower(str_replace(' ', '', $apartmentName)); ?>.jpg" alt="Apartment">
             <div class="centered">
@@ -106,7 +106,7 @@
                     </h5>
                 </div>
                 <div class="card-body text-secondary">
-                    <p class="card-text mb-1">- Rental lease (PDF)</p>
+                    <a href="docs/lease/lease_<?php echo $reservationName.'-'.strtolower(str_replace(' ', '', $apartmentName)); ?>.pdf" class="card-text mb-1">- Rental lease (PDF)</a>
                     <p class="card-text mb-1">- Start date: dd/mm/yy</p>
                     <p class="card-text mb-1">- End date: dd/mm/yy</p>
                     <p class="card-text mb-1" onclick="showExtensionForm();">- <a href="#">Lease extension request</a></p>
@@ -114,7 +114,7 @@
             </div>
 
 
-            <a href="" class="custom-card">
+            <a href="invoicePage.php" class="custom-card">
                 <div class="card border-secondary mb-3">
                     <div class="card-header">
                         <h5>
@@ -135,7 +135,7 @@
                      Useful Information
                 </h5>
                 <div class="card-body text-secondary">
-                    <a href="docs/calendar_Montagne.pdf">Waste collect calendar (PDF)</a>
+                    <a href="doc/calendar_Montagne.pdf">Waste collect calendar (PDF)</a>
                     <p class="card-text">Aparment inventory.</p>
                     <p class="card-text">Ask for a cleaning service.</p>
                 </div>

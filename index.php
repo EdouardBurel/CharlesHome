@@ -1,9 +1,99 @@
-<?php include 'templates/header.php' ?>
+<?php
+    ini_set('display_errors', 'off');
+    session_start();
+    $pdo = new PDO('mysql:dbname=edouardburel_charleshome;host=mysql-edouardburel.alwaysdata.net', '302132_chome', 'Charleshome1');
+    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if(!isset($_SESSION['user_id'])) {
+        header('location: login.php');
+    }
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/override-bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    
+    <title>Charles Home</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+            <?php
+                $id = (int)$_SESSION['user_id'];
+                $query = "SELECT * FROM user WHERE id = ?";
+                $res = $pdo->prepare($query);
+                $res->execute([$id]);
+
+                $user = $res->fetch(PDO::FETCH_ASSOC);
+
+                $reservationName = (string)$user['firstName'].' '.(string)$user['lastName'];
+
+                echo <<<HTML
+              <img src="image/logo_charles-home.png" alt="CHARLES HOME">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Your stay</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:red">Emergency</a>
+                  </li>
+                    <li class="nav-item">
+                        <a href="logout.php" class="nav-link">Se déconnecter</a>
+                    </li>
+                </ul>
+                <span class="helloText navbar-text">
+                    Hello $reservationName !
+                </span>
+              </div>
+            </div>
+            HTML;
+            ?>
+        </nav>
+    </header>
     <main>
+        <?php
+        // Query to fetch the ApartmentID for the name "John Doe"
+        $query = "SELECT ApartmentID FROM Tenant WHERE Name = '$reservationName'";
+        $statement = $pdo->query($query);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            $apartmentId = $result['ApartmentID'];
+            // Use the $apartmentId to fetch the corresponding apartment name
+            $query = "SELECT Name FROM Apartment WHERE ApartmentID = :apartment_id";
+            $statement = $pdo->prepare($query);
+            $statement->bindValue(':apartment_id', $apartmentId);
+            $statement->execute();
+            $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if ($apartmentResult) {
+                $apartmentName = $apartmentResult['Name'];
+            }
+        }
+        ?>
         <div class="container">
-            <img class="imgApart" src="image/original.jpg" alt="Apartment">
+            <img class="imgApart" src="image/<?php echo strtolower(str_replace(' ', '', $apartmentName)); ?>.jpg" alt="Apartment">
             <div class="centered">
-                <h3>Apartment name</h3>
+            <h3><?php echo $apartmentName; ?></h3>
             </div>
         </div>
 
@@ -16,13 +106,15 @@
                     </h5>
                 </div>
                 <div class="card-body text-secondary">
-                    <p class="card-text mb-1">- Rental lease (PDF)</p>
+                    <a href="docs/lease/lease_<?php echo $reservationName.'-'.strtolower(str_replace(' ', '', $apartmentName)); ?>.pdf" class="card-text mb-1">- Rental lease (PDF)</a>
                     <p class="card-text mb-1">- Start date: dd/mm/yy</p>
                     <p class="card-text mb-1">- End date: dd/mm/yy</p>
                     <p class="card-text mb-1" onclick="showExtensionForm();">- <a href="#">Lease extension request</a></p>
                 </div>
             </div>
 
+
+            <a href="invoicePage.php" class="custom-card">
                 <div class="card border-secondary mb-3">
                     <div class="card-header">
                         <h5>
@@ -31,9 +123,10 @@
                         </h5>
                     </div>
                     <div class="card-body text-secondary">
-                    <a href="index2.php" class="card-text">View your rental invoices.</a>
+                    <p class="card-text">View your rental invoices.</p>
                     </div>
                 </div>
+            </a>
 
 
             <div class="card border-success mb-3">
@@ -42,9 +135,9 @@
                      Useful Information
                 </h5>
                 <div class="card-body text-secondary">
-                    <a href="docs/calendar_Montagne.pdf">Waste collect calendar (PDF)</a>
-                    <p class="card-text">Apartment inventory.</p>
-                    <p class="card-text">Cleaning service</p>
+                    <a href="doc/calendar_Montagne.pdf">Waste collect calendar (PDF)</a>
+                    <p class="card-text">Aparment inventory.</p>
+                    <p class="card-text">Ask for a cleaning service.</p>
                 </div>
             </div>
 

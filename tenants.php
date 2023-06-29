@@ -96,6 +96,17 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </thead>
       <tbody>
         <?php foreach ($tenants as $tenant): ?>
+          <?php
+            $query = "SELECT Name FROM Apartment WHERE ApartmentID = :apartment_id";
+            $statement = $pdo->prepare($query);
+            $statement->bindValue(':apartment_id', $apartmentId);
+            $statement->execute();
+            $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if ($apartmentResult) {
+                $apartmentName = $apartmentResult['Name'];
+            }
+        ?>
         <!-- Table rows will be dynamically populated from the database -->
         <tr>
           <td><?= $tenant['Apartment']; ?></td>
@@ -130,33 +141,62 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <form action="code.php" method="POST">
             <div class="form-group">
               <label for="apartmentInput">Apartment</label>
-              <select class="form-control" name="apartment" id="apartmentSelect">
-                    <option value="">Select an Apartment</option>
-                    <!-- Populate the options dynamically from the database -->
-                    <option>Montagne 1</option>
-                    <option>Montagne 2</option>
-                    <option>Montagne 3</option>
-                    <!-- Add more options here -->
-                </select>
+              <select class="form-control" id="apartmentSelect" name="apartment">
+                <?php
+                $stmt = $pdo->query("SELECT ApartmentID, Name FROM Apartment");
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $apartmentID = $row['ApartmentID'];
+                    $apartmentName = $row['Name'];
+                    ?>
+                    <option value="<?= $apartmentID; ?>"><?= $apartmentName; ?></option>
+                    <?php
+                }
+                ?>
+            </select>
             </div>
+
             <div class="form-group">
-              <label for="nameInput">Name</label>
-              <input type="text" class="form-control" name="name" id="nameInput" placeholder="Name">
+              <label for="nameInput">First Name</label>
+              <input type="text" class="form-control" name="firstName" id="fNameInput" placeholder="...">
             </div>
+
             <div class="form-group">
-              <label for="endLeaseInput">End Lease</label>
-              <input type="date" class="form-control" name="endLease" id="endLeaseInput">
+              <label for="nameInput">Last Name</label>
+              <input type="text" class="form-control" name="lastName" id="lNameInput" placeholder="...">
             </div>
+
             <div class="form-group">
               <label for="emailInput">Email</label>
               <input type="email" class="form-control" id="emailInput" name="email" placeholder="Email">
             </div>
+
             <div class="form-group">
-              <label for="numberInput">Number</label>
+              <label for="numberInput">Phone Number</label>
               <input type="text" class="form-control" id="numberInput" name="number" placeholder="Number">
             </div>
+
+            <div class="form-group">
+              <label for="endLeaseInput">Start Lease</label>
+              <input type="date" name="startLease" id="StartLeaseInput">
+            </div>
+
+            <div class="form-group">
+              <label for="endLeaseInput">End Lease</label>
+              <input type="date" name="endLease" id="endLeaseInput">
+            </div>
+
+            <div class="form-group">
+              <label for="rent">Rent</label>
+              <input type="number" name="rent">
+            </div>
+
+            <div class="form-group">
+              <label for="rent">Depoist</label>
+              <input type="number" name="deposit">
+            </div>
+
+        
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary" name="saveTenant">Save Tenant</button>
             </div>
 
@@ -193,13 +233,18 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="form-group">
                 <label for="apartmentInput">Apartment</label>
                 <select class="form-control" id="apartmentSelect" name="apartment">
-                        <option value="<?= $tenant['Apartment']; ?>"></option>
-                        <!-- Populate the options dynamically from the database -->
-                        <option>Apartment 1</option>
-                        <option>Apartment 2</option>
-                        <option>Apartment 3</option>
-                        <!-- Add more options here -->
-                    </select>
+                <?php
+                  $stmt = $pdo->query("SELECT ApartmentID, Name FROM Apartment");
+                  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $apartmentID = $row['ApartmentID'];
+                    $apartmentName = $row['Name'];
+                  ?>
+                    <option value="<?= $apartmentID; ?>"><?= $apartmentName; ?></option>
+                    <?php
+                }
+                ?>
+
+              </select>
                 </div>
                 <div class="form-group">
                 <label for="nameInput">Name</label>

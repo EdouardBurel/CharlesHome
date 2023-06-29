@@ -136,6 +136,8 @@
                     </thead>
                     <tbody>
                         <?php foreach ($tenants as $tenant): ?>
+                            
+                        
                             <tr>
                                 <td><?= $tenant['Apartment']; ?></td>
                                 <td><?= $tenant['TenantName']; ?></td>

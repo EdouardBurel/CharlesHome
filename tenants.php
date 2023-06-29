@@ -89,8 +89,8 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <th>Apartment</th>
           <th>Name</th>
           <th>End Lease</th>
-          <th>Email</th>
-          <th>Number</th>
+          <th>Rent</th>
+          <th>Deposit</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -101,8 +101,8 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <td><?= $tenant['Apartment']; ?></td>
           <td><?= $tenant['TenantName']; ?></td>
           <td><?= $tenant['EndLease']; ?></td>
-          <td><?= $tenant['Email']; ?></td>
-          <td><?= $tenant['Number']; ?></td>
+          <td><?= $tenant['RentAmount']; ?>€</td>
+          <td><?= $tenant['Deposit'];?>€</td>
           <td>
             <a href="code.php?CurrentTenantID=<?= $tenant['CurrentTenantID']; ?>" class="btn btn-info" data-toggle="modal" data-target="#editTenantModal">Update</a>
             <form action="code.php" method="POST" class="d-inline">

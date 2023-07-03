@@ -11,27 +11,31 @@ if(isset($_POST['saveTenant']))
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
     $number = $_POST['number'];
+
+    $res = $pdo->prepare("INSERT INTO Tenant (ApartmentID, LastName, FirstName, Email, Password, Number) VALUES (:apartment, :lastName, :firstName, :email, :password, :number)");
+    $res->bindParam(':apartment', $apartment);
+    $res->bindParam(':lastName', $lastName);
+    $res->bindParam(':firstName', $firstName);
+    $res->bindParam(':email', $email);
+    $res->bindParam(':password', $password);
+    $res->bindParam(':number', $number);
+    $res->execute();
+
+    $tenantID = $pdo->lastInsertId();
+
     $startLease = $_POST['startLease'];
     $endLease = $_POST['endLease'];
     $rent = $_POST['rent'];
     $deposit = $_POST['deposit'];
 
-    $res = $pdo->prepare("INSERT INTO CurrentTenant (Apartment, FirstName, LastName, Email, Number, RentAmount, Deposit) VALUES (:apartment, :firstName, :lastName, :email, :number, :rent, :deposit)");
-    $res->bindParam(':apartment', $apartment);
-    $res->bindParam(':firstName', $firstName);
-    $res->bindParam(':lastName', $lastName);
-    $res->bindParam(':email', $email);
-    $res->bindParam(':number', $number);
-    $res->bindParam(':rent', $rent);
-    $res->bindParam(':deposit', $deposit);
-    $res->execute();
-
-    $tenantID = $pdo->lastInsertId();
-
-    $res = $pdo->prepare("INSERT INTO RentalLease (StartDate, EndDate) VALUES (:startLease, :endLease)");
+    $res = $pdo->prepare("INSERT INTO RentalLease (TenantID, StartDate, EndDate, Rent, Deposit) VALUES (:tenantID, :startLease, :endLease, :rent, :deposit)");
+    $res->bindParam(':tenantID', $tenantID);
     $res->bindParam(':startLease', $startLease);
     $res->bindParam(':endLease', $endLease);
+    $res->bindParam(':rent', $rent);
+    $res->bindParam(':deposit', $deposit);
 
     $res->execute();
 

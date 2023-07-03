@@ -32,13 +32,13 @@
             <div class="container-fluid">
             <?php
                 $id = (int)$_SESSION['user_id'];
-                $query = "SELECT * FROM user WHERE id = ?";
+                $query = "SELECT * FROM Tenant WHERE TenantID = ?";
                 $res = $pdo->prepare($query);
                 $res->execute([$id]);
 
                 $user = $res->fetch(PDO::FETCH_ASSOC);
 
-                $reservationName = (string)$user['firstName'].' '.(string)$user['lastName'];
+                $reservationName = (string)$user['FirstName'].' '.(string)$user['LastName'];
 
                 echo <<<HTML
               <img src="image/logo_charles-home.png" alt="CHARLES HOME">
@@ -54,14 +54,14 @@
                     <a class="nav-link" href="#">Your stay</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#" style="color:red">Emergency</a>
+                    <a class="nav-link" href="#" style="color:red">Need Assistance</a>
                   </li>
-                    <li class="nav-item">
-                        <a href="logout.php" class="nav-link">Se déconnecter</a>
-                    </li>
                 </ul>
                 <span class="helloText navbar-text">
                     Hello $reservationName !
+                </span>
+                <span class="nav-item">
+                    <a href="logout.php" class="nav-link">Se déconnecter</a>
                 </span>
               </div>
             </div>
@@ -72,26 +72,27 @@
     <main>
         <?php
         // Query to fetch the ApartmentID for the name "John Doe"
-        $query = "SELECT ApartmentID FROM Tenant WHERE Name = '$reservationName'";
-        $statement = $pdo->query($query);
+        $query = "SELECT ApartmentID FROM Tenant WHERE FirstName = ? AND LastName = ?";
+        $statement = $pdo->prepare($query);
+        $statement->execute([$user['FirstName'], $user['LastName']]);
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {
             $apartmentId = $result['ApartmentID'];
             // Use the $apartmentId to fetch the corresponding apartment name
-            $query = "SELECT Name FROM Apartment WHERE ApartmentID = :apartment_id";
+            $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = :apartment_id";
             $statement = $pdo->prepare($query);
             $statement->bindValue(':apartment_id', $apartmentId);
             $statement->execute();
             $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
 
             if ($apartmentResult) {
-                $apartmentName = $apartmentResult['Name'];
+                $apartmentName = $apartmentResult['ApartmentName'];
             }
         }
         ?>
         <div class="container">
-            <img class="imgApart" src="image/<?php echo strtolower(str_replace(' ', '', $apartmentName)); ?>.jpg" alt="Apartment">
+            <img class="imgApart" src="image/apartment/<?php echo strtolower(str_replace(' ', '', $apartmentName)); ?>.jpg" alt="Apartment">
             <div class="centered">
             <h3><?php echo $apartmentName; ?></h3>
             </div>

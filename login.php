@@ -9,21 +9,21 @@ if(isset($_POST['submit'])){
     $email= $_POST['email'];
     $password = $_POST['password'];
 
-    $query = $pdo->prepare("SELECT * FROM user WHERE email = :email");
+    $query = $pdo->prepare("SELECT * FROM Tenant WHERE Email = :email");
     $query->bindValue('email', $email);
     $query->execute();
     $res = $query->fetch(PDO::FETCH_ASSOC);
 
     if ($res) {
 
-       if($res['role'] == 'admin'){
+       if($res['Role'] == 'admin'){
    
-          $_SESSION['admin_id'] = $res['id'];
+          $_SESSION['admin_id'] = $res['TenantID'];
           header('location:/admin.php');
  
-       }elseif($res['role'] == 'user'){
+       }elseif($res['Role'] == 'user'){
  
-          $_SESSION['user_id'] = $res['id'];
+          $_SESSION['user_id'] = $res['TenantID'];
           header('location:index.php');
 
        }

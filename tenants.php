@@ -8,8 +8,11 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $errors = [];
 $messages = [];
 
-$stmt = $pdo->query("SELECT * FROM CurrentTenant");
+$stmt = $pdo->query("SELECT * FROM Tenant");
 $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmtLease= $pdo->query("SELECT * FROM RentalLease");
+$leases = $stmtLease->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -96,33 +99,38 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </thead>
       <tbody>
         <?php foreach ($tenants as $tenant): ?>
-          <?php
-            $query = "SELECT Name FROM Apartment WHERE ApartmentID = :apartment_id";
-            $statement = $pdo->prepare($query);
-            $statement->bindValue(':apartment_id', $apartmentId);
-            $statement->execute();
-            $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
+          <?php foreach ($leases as $lease): ?>
+            <?php if ($tenant['TenantID'] === $lease['TenantID']): ?>
+          <tr>
+            <td>
+              <?php
+              $apartmentId = $tenant['ApartmentID'];
+              $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = ?";
+              $statement = $pdo->prepare($query);
+              $statement->execute([$apartmentId]);
+              $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
 
-            if ($apartmentResult) {
-                $apartmentName = $apartmentResult['Name'];
-            }
-        ?>
-        <!-- Table rows will be dynamically populated from the database -->
-        <tr>
-          <td><?= $tenant['Apartment']; ?></td>
-          <td><?= $tenant['TenantName']; ?></td>
-          <td><?= $tenant['EndLease']; ?></td>
-          <td><?= $tenant['RentAmount']; ?>€</td>
-          <td><?= $tenant['Deposit'];?>€</td>
-          <td>
-            <a href="code.php?CurrentTenantID=<?= $tenant['CurrentTenantID']; ?>" class="btn btn-info" data-toggle="modal" data-target="#editTenantModal">Update</a>
-            <form action="code.php" method="POST" class="d-inline">
+              if ($apartmentResult) {
+                  echo $apartmentResult['ApartmentName'];
+              }
+              ?>
+            </td>
+        
+            <td><?= $tenant['LastName']; ?> <?= $tenant['FirstName']; ?></td>
+            <td><?= $lease['EndDate']; ?></td>
+            <td><?= $lease['Rent']; ?>€</td>
+            <td><?= $lease['Deposit'];?>€</td>
+            <td>
+              <a href="code.php?CurrentTenantID=<?= $tenant['CurrentTenantID']; ?>" class="btn btn-info" data-toggle="modal" data-target="#editTenantModal">Update</a>
+              <form action="code.php" method="POST" class="d-inline">
                 <button type="submit" name="delete_tenant" value="<?=$tenant['CurrentTenantID']; ?>" class="btn-delete btn btn-danger">Supprimer</a>
-            </form>
-          </td>
-        </tr>
+              </form>
+            </td>
+          </tr>
+        <?php endif; ?>
       <?php endforeach; ?>
-      </tbody>
+    <?php endforeach; ?>
+    </tbody>
     </table>
   </div>
 
@@ -143,10 +151,10 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <label for="apartmentInput">Apartment</label>
               <select class="form-control" id="apartmentSelect" name="apartment">
                 <?php
-                $stmt = $pdo->query("SELECT ApartmentID, Name FROM Apartment");
+                $stmt = $pdo->query("SELECT ApartmentID, ApartmentName FROM Apartment");
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $apartmentID = $row['ApartmentID'];
-                    $apartmentName = $row['Name'];
+                    $apartmentName = $row['ApartmentName'];
                     ?>
                     <option value="<?= $apartmentID; ?>"><?= $apartmentName; ?></option>
                     <?php
@@ -171,6 +179,11 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <div class="form-group">
+              <label for="emailInput">Password</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            </div>
+
+            <div class="form-group">
               <label for="numberInput">Phone Number</label>
               <input type="text" class="form-control" id="numberInput" name="number" placeholder="Number">
             </div>
@@ -191,7 +204,7 @@ $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <div class="form-group">
-              <label for="rent">Depoist</label>
+              <label for="rent">Deposit</label>
               <input type="number" name="deposit">
             </div>
 

@@ -55,7 +55,7 @@ if(isset($_POST['delete_tenant']))
 {
     $tenant_id = $_POST['delete_tenant'];
 
-    $query = "DELETE FROM CurrentTenant WHERE CurrentTenantID=:tenant_id";
+    $query = "DELETE FROM Tenant WHERE TenantID=:tenant_id";
     $res = $pdo->prepare($query);
     $res->bindParam(':tenant_id', $tenant_id);
     $res->execute();
@@ -70,6 +70,25 @@ if(isset($_POST['delete_tenant']))
     {
         $_SESSION['message'] = "Une erreur s'est produite.";
         header("Location: /tenants.php");
+        exit(0);
+    }
+
+}
+
+// DELETE INVOICE
+
+if(isset($_POST['delete_invoice']))
+{
+    $tenant_id = $_POST['delete_invoice'];
+
+    $query = "DELETE FROM MonthlyInvoice WHERE TenantID=:tenant_id";
+    $res = $pdo->prepare($query);
+    $res->bindParam(':tenant_id', $tenant_id);
+    $res->execute();
+
+    if($res)
+    {
+        header("Location: /invoiceAdmin.php");
         exit(0);
     }
 

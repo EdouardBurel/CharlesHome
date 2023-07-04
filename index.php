@@ -137,8 +137,8 @@
                 </h5>
                 <div class="card-body text-secondary">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#garbage">View waste collection days</a>
-                    <p class="card-text">Remarks on the apartment</p>
-                    <p class="card-text">Ask for a cleaning service.</p>
+                    <p class="card-text mb-2">Front door code: </p>
+                    <p class="card-text mb-2">Ask for a cleaning service.</p>
                 </div>
             </div>
             <div class="modal fade" id="garbage" tabindex="-1" aria-hidden="true">

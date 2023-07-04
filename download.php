@@ -6,13 +6,13 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 if (isset($_GET['file_id'])) {
     $id = $_GET['file_id'];
 
-    $sql = "SELECT * FROM invoice WHERE id = :id";
+    $sql = "SELECT * FROM MonthlyInvoice WHERE TenantID = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':id', $id);
     $stmt->execute();
     $file = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $filepath = 'uploads/' . $file['name'];
+    $filepath = 'uploads/invoices/' . $file['name'];
 
     if (file_exists($filepath)) {
         header('Content-Type: application/octet-stream');

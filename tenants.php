@@ -121,9 +121,9 @@ $leases = $stmtLease->fetchAll(PDO::FETCH_ASSOC);
             <td><?= $lease['Rent']; ?>€</td>
             <td><?= $lease['Deposit'];?>€</td>
             <td>
-              <a href="code.php?CurrentTenantID=<?= $tenant['CurrentTenantID']; ?>" class="btn btn-info" data-toggle="modal" data-target="#editTenantModal">Update</a>
-              <form action="code.php" method="POST" class="d-inline">
-                <button type="submit" name="delete_tenant" value="<?=$tenant['CurrentTenantID']; ?>" class="btn-delete btn btn-danger">Supprimer</a>
+              <a href="lib/code.php?CurrentTenantID=<?= $tenant['TenantID']; ?>" class="btn btn-info" data-toggle="modal" data-target="#editTenantModal">Update</a>
+              <form action="lib/code.php" method="POST" class="d-inline">
+                <button type="submit" name="delete_tenant" value="<?=$tenant['TenantID']; ?>" class="btn-delete btn btn-danger">Supprimer</a>
               </form>
             </td>
           </tr>
@@ -241,7 +241,7 @@ $leases = $stmtLease->fetchAll(PDO::FETCH_ASSOC);
                 if ($res->rowCount() > 0) {
                     $tenant = $res->fetch(PDO::FETCH_ASSOC);
                 ?>  
-            <form action="code.php" method="POST">
+            <form action="lib/code.php" method="POST">
                 <input type='hidden' name="CurrentTenantID" value="<?= $tenant['CurrentTenantID']; ?>">
                 <div class="form-group">
                 <label for="apartmentInput">Apartment</label>

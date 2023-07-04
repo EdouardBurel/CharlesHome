@@ -81,6 +81,11 @@ nav .logo-img img{
     border-radius: 50%;
 }
 
+.imgApart {
+    width: 100%;
+    height: 600px;
+}
+
 body.dark nav .logo-img img{
     filter: invert(1);
     transition: var(--trans-03);

@@ -127,9 +127,9 @@ $leases = $stmtLease->fetchAll(PDO::FETCH_ASSOC);
               </form>
             </td>
           </tr>
-        <?php endif; ?>
+          <?php endif; ?>
+        <?php endforeach; ?>
       <?php endforeach; ?>
-    <?php endforeach; ?>
     </tbody>
     </table>
   </div>

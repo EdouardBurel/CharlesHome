@@ -138,7 +138,7 @@ body {
 }
 
 /* Modal styles */
-.modal {
+.modals {
     background-color: none;
     display: flex;
     width: 100%;

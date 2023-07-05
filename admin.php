@@ -76,83 +76,86 @@
 
                 <div class="boxes" style="display: flex;">
                     <div class="box" style="background-color: #F5F5F5; padding: 10px;">
-                    <table class="table table-striped" style="border-collapse: collapse;">
-                        <thead>
-                            <tr>
-                                <th colspan="2" style="text-align: center;">Check-in</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td scope="row" colspan="2" style="color: green; font-size: 30px; text-align: center; background-color: #F5F5F5;"><?php echo $checkInCount; ?></td>
-                            </tr>
-                        </tbody>
-                        <thead>
-                            <tr>
-                                <th style="text-align: center;">Date</th>
-                                <th style="text-align: center;">Apt</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($checkInRows as $row): ?>
-                            <tr>
-                                <td style="text-align: center;"><?php echo date('l jS F', strtotime($row['StartDate'])); ?></td>
-                                <td style="text-align: center;">
-                                <?php
-                                    $apartmentId = $row['ApartmentID'];
-                                    $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = ?";
-                                    $statement = $pdo->prepare($query);
-                                    $statement->execute([$apartmentId]);
-                                    $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
+                        <div class="box">
+                            <table class="table table-striped" style="border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center;">Check-in</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td scope="row" colspan="2" style="color: green; font-size: 30px; text-align: center; background-color: #F5F5F5;"><?php echo $checkInCount; ?></td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Date</th>
+                                        <th style="text-align: center;">Apt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($checkInRows as $row): ?>
+                                    <tr>
+                                        <td style="text-align: center;"><?php echo date('l jS F', strtotime($row['StartDate'])); ?></td>
+                                        <td style="text-align: center;">
+                                        <?php
+                                            $apartmentId = $row['ApartmentID'];
+                                            $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = ?";
+                                            $statement = $pdo->prepare($query);
+                                            $statement->execute([$apartmentId]);
+                                            $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
 
-                                    if ($apartmentResult) {
-                                        echo $apartmentResult['ApartmentName'];
-                                    }
-                                ?>
-                                </td>
-                            <?php endforeach; ?>
-                            </tr>
-                        </tbody>
-                    </table>
+                                            if ($apartmentResult) {
+                                                echo $apartmentResult['ApartmentName'];
+                                            }
+                                        ?>
+                                        </td>
+                                    <?php endforeach; ?>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box">
+                            <table class="table table-striped" style="border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center;">Check-out</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td scope="row" colspan="2" style="color: red; font-size: 30px; text-align: center;"><?php echo $checkOutCount; ?></td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Date</th>
+                                        <th style="text-align: center;">Apt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($checkOutRows as $checkoutRow): ?>
+                                    <tr>
+                                        <td style="text-align: center;"><?php echo date('l jS F', strtotime($checkoutRow['EndDate'])); ?></td>
+                                        <td style="text-align: center;">
+                                        <?php
+                                            $apartmentId = $row['ApartmentID'];
+                                            $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = ?";
+                                            $statement = $pdo->prepare($query);
+                                            $statement->execute([$apartmentId]);
+                                            $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
 
-                    <table class="table table-striped" style="border-collapse: collapse;">
-                        <thead>
-                            <tr>
-                                <th colspan="2" style="text-align: center;">Check-out</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td scope="row" colspan="2" style="color: red; font-size: 30px; text-align: center;"><?php echo $checkOutCount; ?></td>
-                            </tr>
-                        </tbody>
-                        <thead>
-                            <tr>
-                                <th style="text-align: center;">Date</th>
-                                <th style="text-align: center;">Apt</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($checkOutRows as $checkoutRow): ?>
-                            <tr>
-                                <td style="text-align: center;"><?php echo date('l jS F', strtotime($checkoutRow['EndDate'])); ?></td>
-                                <td style="text-align: center;">
-                                <?php
-                                    $apartmentId = $row['ApartmentID'];
-                                    $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = ?";
-                                    $statement = $pdo->prepare($query);
-                                    $statement->execute([$apartmentId]);
-                                    $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
-
-                                    if ($apartmentResult) {
-                                        echo $apartmentResult['ApartmentName'];
-                                    }
-                                ?>
-                                </td>
-                            <?php endforeach; ?>
-                            </tr>
-                        </tbody>
-                    </table>
+                                            if ($apartmentResult) {
+                                                echo $apartmentResult['ApartmentName'];
+                                            }
+                                        ?>
+                                        </td>
+                                    <?php endforeach; ?>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

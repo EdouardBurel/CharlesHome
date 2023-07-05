@@ -146,7 +146,7 @@ $leases = $stmtLease->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="modal-body">
           <!-- Tenant form fields -->
-          <form action="code.php" method="POST">
+          <form action="lib/code.php" method="POST">
             <div class="form-group">
               <label for="apartmentInput">Apartment</label>
               <select class="form-control" id="apartmentSelect" name="apartment">
@@ -174,8 +174,8 @@ $leases = $stmtLease->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <div class="form-group">
-              <label for="emailInput">Email</label>
-              <input type="email" class="form-control" id="emailInput" name="email" placeholder="Email">
+              <label for="emailInput">Login</label>
+              <input type="text" class="form-control" id="emailInput" name="email" placeholder="Create login ID">
             </div>
 
             <div class="form-group">

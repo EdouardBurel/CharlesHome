@@ -9,12 +9,7 @@
         header('location: login.php');
     }
 
-    $stmt = $pdo->query("SELECT * FROM Tenant");
-    $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $stmtLease= $pdo->query("SELECT * FROM RentalLease");
-    $leases = $stmtLease->fetchAll(PDO::FETCH_ASSOC);
-?>
+    require_once('lib/CheckinTable.php');
 ?>
 
 <!DOCTYPE html>
@@ -79,41 +74,88 @@
                     <span class="text">Monthly Check-in/out - <?php echo date('F Y'); ?></span>
                 </div>
 
-                <div class="boxes">
+                <div class="boxes" style="display: flex;">
                     <div class="box" style="background-color: #F5F5F5; padding: 10px;">
                     <table class="table table-striped" style="border-collapse: collapse;">
                         <thead>
                             <tr>
-                                <th colspan="2" style="text-align: center; border-right: 2px solid black;">Check-in</th>
-                                <th colspan="2" style="text-align: center; background-color: #F5F5F5;">Check-out</th>
+                                <th colspan="2" style="text-align: center;">Check-in</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td scope="row" colspan="2" style="color: green; font-size: 30px; text-align: center; background-color: #F5F5F5; border-right: 2px solid black;">10</td>
-                                <td colspan="2" style="color: red; font-size: 30px; text-align: center;">3</td>
+                                <td scope="row" colspan="2" style="color: green; font-size: 30px; text-align: center; background-color: #F5F5F5;"><?php echo $checkInCount; ?></td>
                             </tr>
                         </tbody>
                         <thead>
                             <tr>
-                                <th style="text-align: center;">Date</th>
-                                <th style="text-align: center;border-right: 2px solid black;">Apt</th>
                                 <th style="text-align: center;">Date</th>
                                 <th style="text-align: center;">Apt</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <?php foreach ($checkInRows as $row): ?>
                             <tr>
-                                <td style="text-align: center;">10/02/23</td>
-                                <td style="text-align: center; border-right: 2px solid black;">Palmerston 2</td>
-                                <td style="text-align: center;">10/02/23</td>
-                                <td style="text-align: center;">Palmerston 2</td>
+                                <td style="text-align: center;"><?php echo date('l jS F', strtotime($row['StartDate'])); ?></td>
+                                <td style="text-align: center;">
+                                <?php
+                                    $apartmentId = $row['ApartmentID'];
+                                    $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = ?";
+                                    $statement = $pdo->prepare($query);
+                                    $statement->execute([$apartmentId]);
+                                    $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
+
+                                    if ($apartmentResult) {
+                                        echo $apartmentResult['ApartmentName'];
+                                    }
+                                ?>
+                                </td>
+                            <?php endforeach; ?>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-striped" style="border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="text-align: center;">Check-out</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row" colspan="2" style="color: red; font-size: 30px; text-align: center;"><?php echo $checkOutCount; ?></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Date</th>
+                                <th style="text-align: center;">Apt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($checkOutRows as $checkoutRow): ?>
+                            <tr>
+                                <td style="text-align: center;"><?php echo date('l jS F', strtotime($checkoutRow['EndDate'])); ?></td>
+                                <td style="text-align: center;">
+                                <?php
+                                    $apartmentId = $row['ApartmentID'];
+                                    $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = ?";
+                                    $statement = $pdo->prepare($query);
+                                    $statement->execute([$apartmentId]);
+                                    $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
+
+                                    if ($apartmentResult) {
+                                        echo $apartmentResult['ApartmentName'];
+                                    }
+                                ?>
+                                </td>
+                            <?php endforeach; ?>
                             </tr>
                         </tbody>
                     </table>
                     </div>
                 </div>
-                </div>
+            </div>
 
                 <div class="activity">
                     <div class="title">
@@ -126,9 +168,8 @@
                         <tr>
                         <th scope="col">Apartment</th>
                         <th scope="col">Name</th>
-                        <th scope="col">End Lease</th>
-                        <th scope="col">Email</th>
                         <th scope="col">Number</th>
+                        <th scope="col">End Lease</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,16 +191,15 @@
                                     ?>
                                 </td>
                                 <td><?= $tenant['FirstName'].' '.$tenant['LastName']; ?></td>
-                                <td><?php echo date('jS F Y', strtotime($lease['EndDate'])); ?></td>
-                                <td><?= $tenant['Email']; ?></td>
                                 <td><?= $tenant['Number']; ?></td>
+                                <td><?php echo date('jS F Y', strtotime($lease['EndDate'])); ?></td>
                             </tr>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-            </div>
+
         </div>
 
     </section>

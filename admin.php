@@ -76,37 +76,43 @@
             <div class="overview">
                 <div class="title">
                     <i class="fa fa-home"></i>
-                    <span class="text">Monthly report - <?php echo date('F Y'); ?></span>
+                    <span class="text">Monthly Check-in/out - <?php echo date('F Y'); ?></span>
                 </div>
 
                 <div class="boxes">
-                    <div class="box box1">
-                        <span class="text">Occupancy</span>
-                        <span class="number">100%</span>
+                    <div class="box" style="background-color: #F5F5F5; padding: 10px;">
+                    <table class="table table-striped" style="border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="text-align: center; border-right: 2px solid black;">Check-in</th>
+                                <th colspan="2" style="text-align: center; background-color: #F5F5F5;">Check-out</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row" colspan="2" style="color: green; font-size: 30px; text-align: center; background-color: #F5F5F5; border-right: 2px solid black;">10</td>
+                                <td colspan="2" style="color: red; font-size: 30px; text-align: center;">3</td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Date</th>
+                                <th style="text-align: center;border-right: 2px solid black;">Apt</th>
+                                <th style="text-align: center;">Date</th>
+                                <th style="text-align: center;">Apt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center;">10/02/23</td>
+                                <td style="text-align: center; border-right: 2px solid black;">Palmerston 2</td>
+                                <td style="text-align: center;">10/02/23</td>
+                                <td style="text-align: center;">Palmerston 2</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     </div>
-
-                    <div class="box box2">
-                        <span class="text">Monthly income</span>
-                        <span class="number">100€</span>
-                    </div>
-
-                    <div class="box box3">
-                        <span class="text">Entry / Exit</span>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                <th scope="col">Check-in</th>
-                                <th scope="col">Check-out</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td scope="row">10</td>
-                                    <td>3</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                </div>
                 </div>
 
                 <div class="activity">

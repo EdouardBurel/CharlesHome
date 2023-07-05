@@ -30,8 +30,9 @@ if(isset($_POST['saveTenant']))
     $rent = $_POST['rent'];
     $deposit = $_POST['deposit'];
 
-    $res = $pdo->prepare("INSERT INTO RentalLease (TenantID, StartDate, EndDate, Rent, Deposit) VALUES (:tenantID, :startLease, :endLease, :rent, :deposit)");
+    $res = $pdo->prepare("INSERT INTO RentalLease (TenantID, ApartmentID, StartDate, EndDate, Rent, Deposit) VALUES (:tenantID, :apartment, :startLease, :endLease, :rent, :deposit)");
     $res->bindParam(':tenantID', $tenantID);
+    $res->bindParam(':apartment', $apartment);
     $res->bindParam(':startLease', $startLease);
     $res->bindParam(':endLease', $endLease);
     $res->bindParam(':rent', $rent);

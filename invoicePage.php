@@ -9,7 +9,20 @@
         header('location: login.php');
     }
 
+    $id = (int)$_SESSION['user_id'];
+    $query = "SELECT * FROM Tenant WHERE TenantID = ?";
+    $res = $pdo->prepare($query);
+    $res->execute([$id]);
 
+    $user = $res->fetch(PDO::FETCH_ASSOC);
+
+    $userID = (int)$user['TenantID'];
+
+    $sql = "SELECT MonthlyInvoice.* FROM MonthlyInvoice
+        WHERE MonthlyInvoice.TenantID = '$userID'";
+    
+    $res = $pdo->query($sql);
+    $files = $res->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -36,8 +49,10 @@
     <?php require_once ('templates/header.php'); ?>
 
     <div class="container mt-5">
-        <h1>Invoices</h1>
-    
+        <div class="header d-flex justify-content-between align-items-center">
+            <h1>Invoices</h1>
+            <a href="index.php" class="btn btn-primary btn-sm" style="padding: 5px 10px;">Return</a>
+        </div>
         <div class="row">
             <table class=" bg-white table table-bordered mt-5">
                 <thead>
@@ -48,14 +63,12 @@
                 <tbody>
                     <?php foreach($files as $file): ?>
                         <tr>
-                            <td><?php echo $file['Month'].' '.$file['Year'];?></td>
+                            <td><?php echo date('F', mktime(0, 0, 0, $file['Month'], 1)).' '.$file['Year'];?></td>
                             <td><?php echo $file['FileInvoice'];?></td>
                             <td>
                                 <a href="download.php?file_id=<?php echo $file['TenantID']; ?>">Download</a>
                             </td>
-
                         </tr>
-
                         <?php endforeach; ?>
 
                 </tbody>

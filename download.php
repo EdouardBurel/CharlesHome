@@ -12,7 +12,7 @@ if (isset($_GET['file_id'])) {
     $stmt->execute();
     $file = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $filepath = 'uploads/invoices/' . $file['name'];
+    $filepath = 'uploads/invoices/' . $file['FileInvoice'];
 
     if (file_exists($filepath)) {
         header('Content-Type: application/octet-stream');

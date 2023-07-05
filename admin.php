@@ -90,23 +90,23 @@
                         <span class="number">100€</span>
                     </div>
 
-                    <div class="box box3">
-                        <span class="text">Entry / Exit</span>
+                    <div class="box" style="background-color: #F5F5F5; padding: 10px;">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                <th scope="col">Check-in</th>
-                                <th scope="col">Check-out</th>
+                                    <th scope="col">Check-in</th>
+                                    <th scope="col">Check-out</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td scope="row">10</td>
-                                    <td>3</td>
+                                    <td scope="row" style="color: green; font-size: 40px; text-align: center;">10</td>
+                                    <td style="color: red; font-size: 40px; text-align: center;">3</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+
                 </div>
 
                 <div class="activity">

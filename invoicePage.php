@@ -8,17 +8,9 @@
     if(!isset($_SESSION['user_id'])) {
         header('location: login.php');
     }
-    $id = (int)$_SESSION['user_id'];
-    $query = "SELECT * FROM user WHERE id = ?";
-    $res = $pdo->prepare($query);
-    $res->execute([$id]);
 
-    $user = $res->fetch(PDO::FETCH_ASSOC);
 
-    $firstNameLog = (string)$user['firstName'];
-    $lastNameLog = (string)$user['lastName'];
 
-include 'filesLogic.php';
 ?>
 
 <!DOCTYPE html>
@@ -57,9 +49,9 @@ include 'filesLogic.php';
                     <?php foreach($files as $file): ?>
                         <tr>
                             <td><?php echo $file['Month'].' '.$file['Year'];?></td>
-                            <td><?php echo $file['name'];?></td>
+                            <td><?php echo $file['FileInvoice'];?></td>
                             <td>
-                                <a href="download.php?file_id=<?php echo $file['id']; ?>">Download</a>
+                                <a href="download.php?file_id=<?php echo $file['TenantID']; ?>">Download</a>
                             </td>
 
                         </tr>

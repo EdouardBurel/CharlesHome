@@ -8,7 +8,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $errors = [];
 $messages = [];
 
-$stmt = $pdo->query("SELECT * FROM invoice");
+$stmt = $pdo->query("SELECT * FROM MonthlyInvoice");
 $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
@@ -98,11 +98,11 @@ $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Table rows will be dynamically populated from the database -->
         <tr>
           <td><?php echo $invoice['Month'].' '.$invoice['Year'];?></td>
-          <td><?= $invoice['Number']; ?></td>
-          <td><?= $invoice['name']; ?></td>
+          <td><?= $invoice['InvoiceNumber']; ?></td>
+          <td><?= $invoice['FileInvoice']; ?></td>
           <td>
-            <form action="code.php" method="POST" class="d-inline">
-                <button type="submit" name="delete_tenant" value="<?=$tenant['CurrentTenantID']; ?>" class="btn-delete btn btn-danger">Supprimer</a>
+            <form action="lib/code.php" method="POST" class="d-inline">
+                <button type="submit" name="delete_invoice" value="<?=$invoice['TenantID']; ?>" class="btn-delete btn btn-danger">Supprimer</a>
             </form>
           </td>
         </tr>
@@ -123,20 +123,31 @@ $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="modal-body">
           <!-- Invoice form fields -->
-          <form class="formUpload" action="index2.php" method="post" enctype="multipart/form-data">
+          <form class="formUpload" action="" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="numberInput">Invoice Number</label>
-                <input type="text" class="form-control" id="numberInput" name="number" placeholder="Number">
+                <input type="text" class="form-control" id="numberInput" name="invoiceNumber" placeholder="Number">
             </div>
 
             <div class="form-group">
-                <label for="firstnameInput">First Name</label>
-                <input type="text" class="form-control" name= 'firstName' placeholder="First Name (client)" required>
+              <label for="apartmentInput">Tenant</label>
+              <select class="form-control" name="tenant">
+                <?php
+                $stmt = $pdo->query("SELECT TenantID, FirstName, LastName FROM Tenant");
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $tenantID = $row['TenantID'];
+                    $tenantName = $row['FirstName'] . ' ' . $row['LastName'];
+                    ?>
+                    <option value="<?= $tenantID; ?>"><?= $tenantName; ?></option>
+                    <?php
+                }
+                ?>
+            </select>
             </div>
 
             <div class="form-group">
-              <label for="nameInput">Last Name</label>
-              <input type="text" class="form-control" name= 'lastName' placeholder="Last Name (client)" required>
+                <label for="numberInput">Month</label>
+                <input type="month" class="form-control" name="monthYear" placeholder="Month">
             </div>
 
             <div class="form-group">
@@ -146,10 +157,42 @@ $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" name="save">Save Tenant</button>
+                <button type="submit" class="btn btn-primary" name="saveInvoice">Save Invoice</button>
             </div>
           </form>
         </div>
+        <?php
+        if(isset($_POST['saveInvoice'])) {
+    $filename = $_FILES['myfile']['name'];
+    $tenantID = $_POST['tenant'];
+    $invoiceNumber = $_POST['invoiceNumber'];
+    $monthYear = $_POST['monthYear'];
+
+
+    $destination = 'uploads/invoices/' . $filename;
+    $extension = pathinfo($filename,PATHINFO_EXTENSION);
+    $file = $_FILES['myfile']['tmp_name'];
+
+    if(!in_array($extension,['pdf','zip','xlsx'])){
+        echo "File not accepted";
+    } else {
+        if(move_uploaded_file($file,$destination)) {
+            $sql = "INSERT INTO MonthlyInvoice (TenantID, InvoiceNumber, Month, Year, FileInvoice) VALUES (:tenantID, :invoiceNumber, :month, :year, :filename)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':tenantID', $tenantID);
+            $stmt->bindValue(':invoiceNumber', $invoiceNumber);
+            $stmt->bindValue(':month', intval(date('m', strtotime($monthYear))));
+            $stmt->bindValue(':year', intval(date('Y', strtotime($monthYear))));
+            $stmt->bindValue(':filename', $filename);
+            
+            if ($stmt->execute()) {
+              echo "File uploaded successfully";
+          } else {
+              echo "Failed to upload the file";
+          }
+        }
+    }
+}?>
       </div>
     </div>
   </div>

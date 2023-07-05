@@ -8,6 +8,13 @@
     if(!isset($_SESSION['admin_id'])) {
         header('location: login.php');
     }
+
+    $stmt = $pdo->query("SELECT * FROM Tenant");
+    $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmtLease= $pdo->query("SELECT * FROM RentalLease");
+    $leases = $stmtLease->fetchAll(PDO::FETCH_ASSOC);
+?>
 ?>
 
 <!DOCTYPE html>
@@ -61,18 +68,6 @@
                         <span class="link-name">Logout</span>
                     </a>
                 </li>
-
-                <li class="mode">
-                    <a href="#">
-                        <i class="fa-solid fa-moon"></i>
-                        <span class="link-name">Dark Mode</span>
-                    </a>
-
-                    <div class="mode-toggle">
-                        <span class="switch"></span>
-                    </div>
-                </li>
-
             </ul>
         </div>
     </nav>
@@ -81,7 +76,7 @@
             <div class="overview">
                 <div class="title">
                     <i class="fa fa-home"></i>
-                    <span class="text">Rentals</span>
+                    <span class="text">Monthly report - <?php echo date('F Y'); ?></span>
                 </div>
 
                 <div class="boxes">
@@ -96,12 +91,12 @@
                     </div>
 
                     <div class="box box3">
-                        <span class="text">Cleaning Service</span>
+                        <span class="text">Entry / Exit</span>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                <th scope="col">Vert</th>
-                                <th scope="col">Noir</th>
+                                <th scope="col">Check-in</th>
+                                <th scope="col">Check-out</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -120,10 +115,6 @@
                         <span class="text">Current tenants</span>
                     </div>
                 </div>
-                <?php
-                $stmt = $pdo->query("SELECT * FROM CurrentTenant");
-                $tenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                ?>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -136,15 +127,29 @@
                     </thead>
                     <tbody>
                         <?php foreach ($tenants as $tenant): ?>
-                            
-                        
+                            <?php foreach ($leases as $lease): ?>
+                                <?php if ($tenant['TenantID'] === $lease['TenantID']): ?> 
                             <tr>
-                                <td><?= $tenant['Apartment']; ?></td>
-                                <td><?= $tenant['TenantName']; ?></td>
-                                <td><?= $tenant['EndLease']; ?></td>
+                                <td>
+                                    <?php
+                                    $apartmentId = $tenant['ApartmentID'];
+                                    $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = ?";
+                                    $statement = $pdo->prepare($query);
+                                    $statement->execute([$apartmentId]);
+                                    $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
+
+                                    if ($apartmentResult) {
+                                        echo $apartmentResult['ApartmentName'];
+                                    }
+                                    ?>
+                                </td>
+                                <td><?= $tenant['FirstName'].' '.$tenant['LastName']; ?></td>
+                                <td><?php echo date('jS F Y', strtotime($lease['EndDate'])); ?></td>
                                 <td><?= $tenant['Email']; ?></td>
                                 <td><?= $tenant['Number']; ?></td>
                             </tr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         <?php endforeach; ?>
                     </tbody>
                 </table>

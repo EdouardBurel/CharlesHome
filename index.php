@@ -19,7 +19,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="css/override-bootstrap.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
@@ -88,6 +87,8 @@
 
             if ($apartmentResult) {
                 $apartmentName = $apartmentResult['ApartmentName'];
+                $buildingName = rtrim($apartmentName, ' 1234567890');
+                $extractedApartmentName = strtolower(preg_replace('/[^a-zA-Z]/', '', $apartmentName));
             }
         }
         ?>
@@ -107,10 +108,9 @@
                     </h5>
                 </div>
                 <div class="card-body text-secondary">
-                    <a href="docs/lease/lease_<?php echo $reservationName.'-'.strtolower(str_replace(' ', '', $apartmentName)); ?>.pdf" class="card-text mb-1">- Rental lease (PDF)</a>
+                    <span> - </span><a href="docs/lease/lease_<?php echo $reservationName.'-'.strtolower(str_replace(' ', '', $apartmentName)); ?>.pdf" class="card-text mb-1"> Rental lease (PDF)</a>
                     <p class="card-text mb-1">- Start date: dd/mm/yy</p>
                     <p class="card-text mb-1">- End date: dd/mm/yy</p>
-                    <p class="card-text mb-1" onclick="showExtensionForm();">- <a href="#">Lease extension request</a></p>
                 </div>
             </div>
 
@@ -123,9 +123,9 @@
                         Invoices
                         </h5>
                     </div>
-                    <div class="card-body text-secondary">
-                    <p class="card-text">View your rental invoices.</p>
-                    </div>
+                        <div class="card-body text-secondary">
+                            <p class="card-text">View your rental invoices.</p>
+                        </div>
                 </div>
             </a>
 
@@ -136,35 +136,35 @@
                      Useful Information
                 </h5>
                 <div class="card-body text-secondary">
-                    <a href="doc/calendar_Montagne.pdf">Waste collect calendar (PDF)</a>
-                    <p class="card-text">Aparment inventory.</p>
-                    <p class="card-text">Ask for a cleaning service.</p>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#garbage">View waste collection days</a>
+                    <p class="card-text mb-2">Front door code: </p>
+                    <p class="card-text mb-2">Ask for a cleaning service.</p>
                 </div>
             </div>
-
+            <div class="modal fade" id="garbage" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title"><?php echo $buildingName; ?></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="image/collectes/<?php echo $extractedApartmentName; ?>.jpg" alt="bin" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="card border-danger mb-3">
                 <h5 class="card-header">
                     <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                    Emergency</h5>
+                    Need Assistance</h5>
                 <div class="card-body text-danger">
                 <p class="card-text"> - Cannot access the apartment?</p>
                 <p class="card-text"> - No hot water?</p>
                 </div>
-            </div>
-        </div>
-        <div id="overlay" class="overlay">
-            <div class="modal">
-                <form>
-                    <label class="labelDate" for="startDate">Start date extension:</label>
-                    <input type="date" id="startDate" name="startDate" required>
-    
-                    <label class="labelDate" for="endDate">End date extension:</label>
-                    <input type="date" id="endDate" name="endDate" required>
-    
-                    <input type="submit" value="Send">
-                    <button type="button" onclick="closeExtensionForm();">X</button>
-                </form>
             </div>
         </div>
     </main>
@@ -182,6 +182,7 @@
           </div>
       </footer>
 
-<script src="script.js"></script> 
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+      <script src="script.js"></script> 
 </body>
 </html>

@@ -88,7 +88,7 @@ if(isset($_POST['submit'])){
     <div class="login-container">
         <img src="image/logo_charles-home.png" alt="Logo">
         <form method="POST" enctype="multipart/form-data">
-            <input name="email" type="email" placeholder="Email" required><br>
+            <input name="email" type="text" placeholder="username" required><br>
             <input name="password" type="password" placeholder="Password" required><br>
             <button name="submit" type="submit">Login</button>
         </form>

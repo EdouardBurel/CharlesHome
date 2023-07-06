@@ -108,8 +108,9 @@
                 </div>
                 <div class="card-body text-secondary">
                     <span> - </span><a href="docs/lease/lease_<?php echo $reservationName.'-'.strtolower(str_replace(' ', '', $apartmentName)); ?>.pdf" class="card-text mb-1"> Rental lease (PDF)</a>
-                    <p class="card-text mb-1">- Start date: dd/mm/yy</p>
-                    <p class="card-text mb-1">- End date: dd/mm/yy</p>
+                    <p class="card-text mb-1">- Monthly Rent: 2500€</p>
+                    <p class="card-text mb-1">- Deposit: 900€</p>
+                    <p class="card-text mb-1">- End of the lease: dd/mm/yy</p>
                 </div>
             </div>
 
@@ -136,7 +137,9 @@
                 </h5>
                 <div class="card-body text-secondary">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#garbage">View waste collection days</a>
+                    <p></p>
                     <p class="card-text mb-2">Front door code: </p>
+                    <p></p>
                     <p class="card-text mb-2">Ask for a cleaning service.</p>
                 </div>
             </div>

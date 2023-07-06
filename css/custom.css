@@ -27,12 +27,6 @@
 };
     
 
-.navContent li a .logout {
-    margin-top: 3rem;
-    border-top: 1px solid gray;
-    position: sticky;
-}
-
 .mainContent {
     padding-top: 60px;
 }

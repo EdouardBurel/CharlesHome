@@ -131,3 +131,17 @@ if(isset($_POST['updateTenant']))
         exit(0);
     }
 }
+
+// FRONT DOOR CODE
+function getFrontDoorCode($building) {
+    switch ($building) {
+        case 'Montagne':
+            return '5962C';
+        case 'Palmerston':
+            return '09250';
+        case 'Paul Lauters':
+            return '&#x1F5DD; 1472 &#x1F5DD;';
+        default:
+            return 'Unknown';
+    }
+}

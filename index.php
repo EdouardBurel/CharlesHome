@@ -1,6 +1,8 @@
 <?php
     ini_set('display_errors', 'off');
     session_start();
+    require_once 'lib/code.php';
+
     $pdo = new PDO('mysql:dbname=edouardburel_charleshome;host=mysql-edouardburel.alwaysdata.net', '302132_chome', 'Charleshome1');
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -8,6 +10,8 @@
     if(!isset($_SESSION['user_id'])) {
         header('location: login.php');
     }
+
+    
 
 ?>
 
@@ -39,6 +43,9 @@
                 $user = $res->fetch(PDO::FETCH_ASSOC);
 
                 $reservationName = (string)$user['FirstName'].' '.(string)$user['LastName'];
+                $reservationLastName = (string)$user['LastName'];
+
+
 
                 echo <<<HTML
               <img src="image/logo_charles-home.png" alt="CHARLES HOME">
@@ -107,7 +114,7 @@
                     </h5>
                 </div>
                 <div class="card-body text-secondary">
-                    <span> - </span><a href="docs/lease/lease_<?php echo $reservationName.'-'.strtolower(str_replace(' ', '', $apartmentName)); ?>.pdf" class="card-text mb-1"> Rental lease (PDF)</a>
+                    <span> - </span><a href="docs/lease/lease_<?php echo $reservationLastName.'-'.strtolower(str_replace(' ', '', $apartmentName)); ?>.pdf" class="card-text mb-1"> Rental lease (PDF)</a>
                     <p class="card-text mb-1">- Monthly Rent: 2500€</p>
                     <p class="card-text mb-1">- Deposit: 900€</p>
                     <p class="card-text mb-1">- End of the lease: dd/mm/yy</p>
@@ -138,7 +145,8 @@
                 <div class="card-body text-secondary">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#garbage">View waste collection days</a>
                     <p></p>
-                    <p class="card-text mb-2">Front door code: </p>
+                    <?php $frontDoorCode = getFrontDoorCode($buildingName); ?>
+                    <?php echo '<p class="card-text mb-2">Front door code: ' . $frontDoorCode . '</p>'?>
                     <p></p>
                     <p class="card-text mb-2">Ask for a cleaning service.</p>
                 </div>

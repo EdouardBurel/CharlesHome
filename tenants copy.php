@@ -18,58 +18,111 @@ $leases = $stmtLease->fetchAll(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apartment Management</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
-    <nav>
-        <div class="logo-name">
-            <div class="logo-img">
-                <img src="image/logo-key.png" alt="Charles Home">
-            </div>
-
-            <span class="logo_name">Charles Home</span>
+  <div class="container d-flex flex-column flex-md-row">
+    <nav class="navbar navbar-expand-md navbar-light d-flex flex-md-column">
+        <div class="ms-md-auto">
+            <img class="logo-name" src="image/logo-key.png" alt="Charles Home" width="60">
         </div>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle Navigation"
+        >
+        <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <div class="menu-items">
-            <ul class="nav-links">
+        <div class="navContent collapse navbar-collapse w-100" id="navbarSupportedContent">
+            <ul class="navbar-nav w-100 d-flex flex-md-column text-center text-md-end">
                 <li>
-                    <a href="admin.php">
-                        <i class="fa fa-home"></i>
-                        <span class="link-name">Dashboard</span>
-                    </a>
+                    <a href="#" class="nav-link" aria-current="page">
+                    <i class="fa fa-home"></i>
+                        Dashboard</a>
+                </li>
+                <li>
+                    <a href="tenants.php" class="nav-link">
+                    <i class="fa fa-user"></i>
+                        Tenants</a>
+                </li>
+                <li>
+                    <a href="invoiceAdmin.php" class="nav-link" style="margin-bottom: 9rem;">
+                    <i class="fa-solid fa-file-invoice"></i>
+                        Invoices</a>
                 </li>
 
                 <li>
-                    <a href="tenants.php">
-                        <i class="fa fa-user"></i>
-                        <span class="link-name">Tenants</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="invoiceAdmin.php">
-                        <i class="fa-solid fa-file-invoice"></i>
-                        <span class="link-name">Invoice</span>
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="logout-mode">
-                <li>
-                    <a href="logout.php">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        <span class="link-name">Logout</span>
-                    </a>
+                    <a href="logout.php" class="logout nav-link" style="border-top: 1px solid lightgray;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout</a>
                 </li>
             </ul>
         </div>
     </nav>
+    <main class="mainContent ps-0 ps-md-5 flex-grow-1">
+      <div class="container mt-5">
+      <h1>Apartment Management</h1>
+      <button class="btn btn-primary mb-3 mt-5" data-toggle="modal" data-target="#addTenantModal">Add a tenant</button>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Apartment</th>
+            <th>Name</th>
+            <th>End Lease</th>
+            <th>Rent</th>
+            <th>Deposit</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($tenants as $tenant): ?>
+            <?php foreach ($leases as $lease): ?>
+              <?php if ($tenant['TenantID'] === $lease['TenantID']): ?>
+            <tr>
+              <td>
+                <?php
+                $apartmentId = $tenant['ApartmentID'];
+                $query = "SELECT ApartmentName FROM Apartment WHERE ApartmentID = ?";
+                $statement = $pdo->prepare($query);
+                $statement->execute([$apartmentId]);
+                $apartmentResult = $statement->fetch(PDO::FETCH_ASSOC);
+
+                if ($apartmentResult) {
+                    echo $apartmentResult['ApartmentName'];
+                }
+                ?>
+              </td>
+          
+              <td><?= $tenant['LastName']; ?> <?= $tenant['FirstName']; ?></td>
+              <td><?= $lease['EndDate']; ?></td>
+              <td><?= $lease['Rent']; ?>€</td>
+              <td><?= $lease['Deposit'];?>€</td>
+              <td>
+                <a href="lib/code.php?CurrentTenantID=<?= $tenant['TenantID']; ?>" class="btn btn-info" data-toggle="modal" data-target="#editTenantModal">Update</a>
+                <form action="lib/code.php" method="POST" class="d-inline">
+                  <button type="submit" name="delete_tenant" value="<?=$tenant['TenantID']; ?>" class="btn-delete btn btn-danger">Supprimer</a>
+                </form>
+              </td>
+            </tr>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        <?php endforeach; ?>
+      </tbody>
+      </table>
+    </div>
+    </main>
+  </div>
+
   <div class="container mt-5">
     <h1>Apartment Management</h1>
     <button class="btn btn-primary mb-3 mt-5" data-toggle="modal" data-target="#addTenantModal">Add a tenant</button>

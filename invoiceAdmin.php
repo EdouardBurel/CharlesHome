@@ -65,18 +65,6 @@ $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <span class="link-name">Logout</span>
                     </a>
                 </li>
-
-                <li class="mode">
-                    <a href="#">
-                        <i class="fa-solid fa-moon"></i>
-                        <span class="link-name">Dark Mode</span>
-                    </a>
-
-                    <div class="mode-toggle">
-                        <span class="switch"></span>
-                    </div>
-                </li>
-
             </ul>
         </div>
     </nav>

@@ -61,13 +61,18 @@
                     <a class="nav-link" href="#">Your stay</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#" style="color:red">Need Assistance</a>
+                    <a class="nav-link" data-bs-toggle="modal" data-bs-target="#help" style="color:red; cursor: pointer">Need Assistance</a>
                   </li>
                 </ul>
                 <span class="helloText navbar-text">
                     Hello $reservationName !
                 </span>
-                <span class="nav-item"><a href="logout.php" class="nav-link">Logout</a></span>
+                <span class="nav-item">
+                    <a href="logout.php" class="nav-link" style="text-align: end">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    Logout</a>
+                </span>
+
               </div>
             </div>
             HTML;
@@ -165,7 +170,7 @@
                 </div>
             </div>
 
-            <a href="invoicePage.php" data-bs-toggle="modal" data-bs-target="#help" class="custom-card">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#help" class="custom-card">
                 <div class="card border-danger mb-3">
                     <h5 class="card-header">
                         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">

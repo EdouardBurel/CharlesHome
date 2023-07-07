@@ -46,7 +46,7 @@ $(document).ready(function() {
     });
 });
 
-
+/*
 var text = $apartmentName;
 var $imageName = text.toLowerCase().replace(/\s/g, '');
-console.log(variable);
+console.log(variable); */

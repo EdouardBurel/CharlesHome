@@ -114,7 +114,7 @@
                     </h5>
                 </div>
                 <div class="card-body text-secondary">
-                    <span> - </span><a href="docs/lease/lease_<?php echo $reservationLastName.'-'.strtolower(str_replace(' ', '', $apartmentName)); ?>.pdf" class="card-text mb-1"> Rental lease (PDF)</a>
+                    <span> - </span><a href="docs/lease/lease_<?php echo $reservationLastName.'-'.strtolower(str_replace(' ', '', $apartmentName)); ?>.pdf" target="_blank" class="card-text mb-1"> Rental lease (PDF)</a>
                     <p class="card-text mb-1">- Monthly Rent: 2500€</p>
                     <p class="card-text mb-1">- Deposit: 900€</p>
                     <p class="card-text mb-1">- End of the lease: dd/mm/yy</p>
@@ -156,9 +156,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                         <h5 class="modal-title"><?php echo $buildingName; ?></h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <img src="image/collectes/<?php echo $extractedApartmentName; ?>.jpg" alt="bin" class="img-fluid">
@@ -167,15 +165,61 @@
                 </div>
             </div>
 
-            <div class="card border-danger mb-3">
-                <h5 class="card-header">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                    Need Assistance</h5>
-                <div class="card-body text-danger">
-                <p class="card-text"> - Cannot access the apartment?</p>
-                <p class="card-text"> - No hot water?</p>
+            <a href="invoicePage.php" data-bs-toggle="modal" data-bs-target="#help" class="custom-card">
+                <div class="card border-danger mb-3">
+                    <h5 class="card-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                            <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                            <path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/>
+                        </svg>
+                        Need Assistance
+                    </h5>
+                    <div class="card-body d-flex flex-column">
+                        <span class="card-text"> - Cannot access the apartment?</span>
+                        <br>
+                        <span class="card-text"> - No hot water? Leak? etc...</span>
+                        <div class="mt-auto text-center">
+                            <h5 class="card-text text-danger">Click for assistance</h5>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+
+
+            <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="addInvoiceModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addInvoiceModalLabel">Add an invoice</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="concern" class="form-label">Select your concern:</label>
+                                    <select class="form-select" id="concern">
+                                        <option disabled selected>---</option>
+                                        <option value="no-hot-water">No hot water in the apartment</option>
+                                        <option value="cannot-access">Cannot access the apartment</option>
+                                        <option value="washing-machine-issue">Issue with the washing machine</option>
+                                        <option value="apartment-leak">Leak in the apartment</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div id="concern-text" class="mb-3"></div>
+                                <div id="other-description" class="mb-3" style="display: none;">
+                                    <label for="issue-description" class="form-label">Please describe your issue:</label>
+                                    <textarea class="form-control" id="issue-description" rows="3"></textarea>
+                                </div>
+                                <button type="submit" id="submit-btn" class="btn btn-primary" style="display: none;">Submit</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
         </div>
     </main>
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
@@ -192,7 +236,13 @@
           </div>
       </footer>
 
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+      <script>
+        // Assign values to JavaScript variables
+        var apartmentName = '<?php echo $apartmentName; ?>';
+        var reservationName = '<?php echo $reservationName; ?>';
+        </script>
       <script src="script.js"></script> 
 </body>
 </html>

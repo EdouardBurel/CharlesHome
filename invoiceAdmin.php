@@ -105,9 +105,7 @@ $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addInvoiceModalLabel">Add an invoice</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <!-- Invoice form fields -->
@@ -151,41 +149,42 @@ $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <?php
         if(isset($_POST['saveInvoice'])) {
-    $filename = $_FILES['myfile']['name'];
-    $tenantID = $_POST['tenant'];
-    $invoiceNumber = $_POST['invoiceNumber'];
-    $monthYear = $_POST['monthYear'];
+          $filename = $_FILES['myfile']['name'];
+          $tenantID = $_POST['tenant'];
+          $invoiceNumber = $_POST['invoiceNumber'];
+          $monthYear = $_POST['monthYear'];
 
 
-    $destination = 'uploads/invoices/' . $filename;
-    $extension = pathinfo($filename,PATHINFO_EXTENSION);
-    $file = $_FILES['myfile']['tmp_name'];
+          $destination = 'uploads/invoices/' . $filename;
+          $extension = pathinfo($filename,PATHINFO_EXTENSION);
+          $file = $_FILES['myfile']['tmp_name'];
 
-    if(!in_array($extension,['pdf','zip','xlsx'])){
-        echo "File not accepted";
-    } else {
-        if(move_uploaded_file($file,$destination)) {
-            $sql = "INSERT INTO MonthlyInvoice (TenantID, InvoiceNumber, Month, Year, FileInvoice) VALUES (:tenantID, :invoiceNumber, :month, :year, :filename)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':tenantID', $tenantID);
-            $stmt->bindValue(':invoiceNumber', $invoiceNumber);
-            $stmt->bindValue(':month', intval(date('m', strtotime($monthYear))));
-            $stmt->bindValue(':year', intval(date('Y', strtotime($monthYear))));
-            $stmt->bindValue(':filename', $filename);
-            
-            if ($stmt->execute()) {
-              echo "File uploaded successfully";
-          } else {
-              echo "Failed to upload the file";
-          }
-        }
-    }
-}?>
+            if(!in_array($extension,['pdf','zip','xlsx'])){
+                echo "File not accepted";
+            } else {
+                if(move_uploaded_file($file,$destination)) {
+                    $sql = "INSERT INTO MonthlyInvoice (TenantID, InvoiceNumber, Month, Year, FileInvoice) VALUES (:tenantID, :invoiceNumber, :month, :year, :filename)";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindValue(':tenantID', $tenantID);
+                    $stmt->bindValue(':invoiceNumber', $invoiceNumber);
+                    $stmt->bindValue(':month', intval(date('m', strtotime($monthYear))));
+                    $stmt->bindValue(':year', intval(date('Y', strtotime($monthYear))));
+                    $stmt->bindValue(':filename', $filename);
+                    
+                    if ($stmt->execute()) {
+                      echo "File uploaded successfully";
+                  } else {
+                      echo "Failed to upload the file";
+                  }
+                }
+            }
+        }?>
       </div>
     </div>
   </div>
 
   <!-- jQuery and Bootstrap JS -->
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

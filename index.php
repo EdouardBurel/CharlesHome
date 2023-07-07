@@ -191,11 +191,15 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="addInvoiceModalLabel">Add an invoice</h5>
+                            <h5 class="modal-title" id="addInvoiceModalLabel">Assistance</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
+                            <div class="mb-3" style="font-size: small;">
+                                <p style="font-weight:bold">Office number Tel: 02 318 42 10</p>
+                                <p>We kindly requested to <span style="color: red;">leave a voice message</span> on our office number. Once we receive the message, we will promptly get in touch with you.</p>
+                            </div>
                                 <div class="mb-3">
                                     <label for="concern" class="form-label">Select your concern:</label>
                                     <select class="form-select" id="concern">

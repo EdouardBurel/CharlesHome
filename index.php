@@ -130,7 +130,7 @@
                         Invoices
                         </h5>
                     </div>
-                        <div class="card-body text-secondary">
+                        <div class="card-body text-secondary" style="display: flex; justify-content:center; align-items:center">
                             <p class="card-text">View your rental invoices.</p>
                         </div>
                 </div>

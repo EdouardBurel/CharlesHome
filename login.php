@@ -37,61 +37,60 @@ if(isset($_POST['submit'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+
         body {
-            background-color: black;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
+            background-color: #343a40;
+            color: white;
+            font-family: 'Poppins', sans-serif;
         }
 
         .login-container {
-            background-color: #fff;
-            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
             border-radius: 5px;
+            max-width: 400px;
             text-align: center;
         }
 
-        .login-container img {
+        .logo {
             width: 150px;
             margin-bottom: 20px;
         }
 
-        .login-container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-        }
-
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #ff8f00;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .login-container button:hover {
-            opacity: 0.7;
+        .btn-login {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            background-color: orange;
+            border-radius: 25px;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <img src="image/logo_charles-home.png" alt="Logo">
-        <form method="POST" enctype="multipart/form-data">
-            <input name="email" type="text" placeholder="username" required><br>
-            <input name="password" type="password" placeholder="Password" required><br>
-            <button name="submit" type="submit">Login</button>
-        </form>
+        <div class="form-container">
+            <img class="logo" src="image/logo_charles-home.png" alt="Logo">
+            <form method="POST" enctype="multipart/form-data">
+                <input name="email" type="text" class="form-control" placeholder="Username" required><br>
+                <input name="password" type="password" class="form-control" placeholder="Password" required><br>
+                <div class="btn-login">
+                    <button name="submit" type="submit" class="btn">Login</button>
+                </div>
+            </form>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

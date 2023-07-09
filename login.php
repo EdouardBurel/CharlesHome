@@ -45,6 +45,7 @@ if(isset($_POST['submit'])){
             background-color: #343a40;
             color: white;
             font-family: 'Poppins', sans-serif;
+            height: 100vh;
         }
 
         .login-container {

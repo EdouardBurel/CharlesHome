@@ -46,6 +46,7 @@ if(isset($_POST['submit'])){
             color: white;
             font-family: 'Poppins', sans-serif;
             height: 100vh;
+            overflow: hidden;
         }
 
         .login-container {

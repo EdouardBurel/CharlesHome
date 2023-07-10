@@ -42,7 +42,7 @@ if(isset($_POST['submit'])){
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
 
         body {
-            background-color: #343a40;
+            background-color: pink;
             color: white;
             font-family: 'Poppins', sans-serif;
             height: 100vh;
